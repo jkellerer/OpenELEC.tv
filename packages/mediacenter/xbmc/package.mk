@@ -17,13 +17,13 @@
 ################################################################################
 
 PKG_NAME="xbmc"
-PKG_VERSION="13-a1cab7a"
+PKG_VERSION="13-6d3bb09"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
 PKG_SITE="http://www.xbmc.org"
 PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
-PKG_DEPENDS_TARGET="toolchain boost Python zlib bzip2 systemd pciutils lzo pcre swig:host libass enca curl rtmpdump fontconfig fribidi gnutls tinyxml libjpeg-turbo libpng tiff freetype jasper libmad libsamplerate libogg libcdio libmodplug faad2 flac libmpeg2 taglib libxml2 libxslt yajl sqlite libvorbis"
+PKG_DEPENDS_TARGET="toolchain boost Python zlib bzip2 systemd pciutils lzo pcre swig:host libass enca curl rtmpdump fontconfig fribidi gnutls tinyxml libjpeg-turbo libpng tiff freetype jasper libmad libsamplerate libogg libcdio libmodplug flac libmpeg2 taglib libxml2 libxslt yajl sqlite libvorbis"
 PKG_PRIORITY="optional"
 PKG_SECTION="mediacenter"
 PKG_SHORTDESC="xbmc: XBMC Mediacenter"
@@ -86,6 +86,11 @@ if [ "$PULSEAUDIO_SUPPORT" = yes ]; then
   XBMC_PULSEAUDIO="--enable-pulse"
 else
   XBMC_PULSEAUDIO="--disable-pulse"
+fi
+
+if [ "$ESPEAK_SUPPORT" = yes ]; then
+# for espeak support
+  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET espeak"
 fi
 
 if [ "$CEC_SUPPORT" = yes ]; then
@@ -186,7 +191,7 @@ else
 fi
 
 if [ "$AVAHI_DAEMON" = yes ]; then
-  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET avahi"
+  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET avahi nss-mdns"
   XBMC_AVAHI="--enable-avahi"
 else
   XBMC_AVAHI="--disable-avahi"
@@ -294,6 +299,11 @@ if [ "$CRYSTALHD" = yes ]; then
   XBMC_CRYSTALHD="--enable-crystalhd"
 else
   XBMC_CRYSTALHD="--disable-crystalhd"
+fi
+
+if [ "$TARGET_ARCH" = "i386" -o "$TARGET_ARCH" = "x86_64" ]; then
+# TODO: hack to for including FM patch on x86, rework this in OpenELEC-5.0
+  PKG_DEPENDS_TARGET="$PKG_DEPENDS_TARGET ffmpeg"
 fi
 
 export CXX_FOR_BUILD="$HOST_CXX"
@@ -506,4 +516,5 @@ post_install() {
   enable_service xbmc-waitonnetwork.service
   enable_service xbmc.service
   enable_service xbmc-lirc-suspend.service
+  enable_service display-manager.service
 }

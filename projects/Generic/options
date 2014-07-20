@@ -1,5 +1,8 @@
-# Name of the Distro to build (full name, without special charcters)
+# Name of the Distro to build (full name, without special characters)
   DISTRONAME="OpenELEC"
+  if [ "$XBMC" = master ]; then
+    DISTRONAME="OpenELEC_Helix"
+  fi
 
 # short project description
   DESCRIPTION="OpenELEC is a fast and userfriendly XBMC Mediacenter distribution."
@@ -116,6 +119,9 @@
 
 # Mediacenter to use (xbmc / no)
   MEDIACENTER="xbmc"
+  if [ "$XBMC" = master ]; then
+    MEDIACENTER="xbmc-master"
+  fi
 
 # Skins to install (Confluence)
 # Space separated list is supported,
@@ -152,6 +158,9 @@
 # build and install PulseAudio support (yes / no)
   PULSEAUDIO_SUPPORT="no"
 
+# build and install espeak support (yes / no)
+  ESPEAK_SUPPORT="yes"
+
 # build and install with non-free support
 # (RAR compression support in XBMC) (yes / no)
   NONFREE_SUPPORT="yes"
@@ -160,7 +169,7 @@
 # (DVD decryption support in XBMC) (yes / no)
   DVDCSS_SUPPORT="yes"
 
-# build and install with LAME cdrip encoder support
+# build and install with LAME cdrip encoder support # deprecated with xbmc-master
   ENCODER_LAME="yes"
 
 # build and install with BluRay support (yes / no)
@@ -170,7 +179,7 @@
 # for a list of additinoal drivers see packages/linux-drivers
 # Space separated list is supported,
 # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
-  ADDITIONAL_DRIVERS="RTL8192CU RTL8188EU dvbhdhomerun"
+  ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8188EU RTL8812AU dvbhdhomerun"
 
 # build and install bluetooth support (yes / no)
   BLUETOOTH_SUPPORT="yes"
@@ -192,6 +201,11 @@
 
 # build xbmc with optical drive support (yes / no)
   OPTICAL_DRIVE_SUPPORT="yes"
+
+# XBMC Audio encoders for usage with optical drive support
+# Space separated list is supported,
+# e.g. XBMC_AUDIOENCODER_ADDONS="ENCODER1 ENCODER2"
+  XBMC_AUDIOENCODER_ADDONS="flac lame vorbis wav"
 
 # build with AirPlay support (stream videos from iDevices to XBMC) (yes / no)
   AIRPLAY_SUPPORT="yes"
@@ -240,7 +254,7 @@
 # OpenGL-ES implementation to use (no)
   OPENGLES="no"
 
-# Windowmanager to use (ratpoison / fluxbox / dwm / none)
+# Windowmanager to use (ratpoison / fluxbox / none)
   WINDOWMANAGER="fluxbox"
 
 # include uvesafb support (yes / no)
@@ -249,10 +263,16 @@
 # Displayserver to use (x11 / no)
   DISPLAYSERVER="x11"
 
-# Xorg Graphic drivers to use (all / i915,i965,r200,r300,r600,nvidia,nouveau,vmware)
+# Xorg Graphic drivers to use (all / i915,i965,r200,r300,r600,nvidia,nouveau)
 # Space separated list is supported,
 # e.g. GRAPHIC_DRIVERS="i915 i965 r300 r600 nvidia nouveau"
-  GRAPHIC_DRIVERS="r200 r300 r600 radeonsi i915 i965 nvidia"
+  if [ "$TARGET_ARCH" = "i386" ]; then
+    # TODO: create Legacy build with OpenELEC-4.2
+    # install legacy drivers to i386 ARCH
+    GRAPHIC_DRIVERS="r200 r300 r600 i915 i965 nvidia-legacy"
+  elif [ "$TARGET_ARCH" = "x86_64" ]; then
+    GRAPHIC_DRIVERS="r300 r600 radeonsi i915 i965 nvidia"
+  fi
 
 # XBMC Player implementation to use (default / bcm2835-driver)
   XBMCPLAYER_DRIVER="default"
@@ -296,10 +316,10 @@
 # 'all' compiles all drivers;
 # 'all,!xxx,!yyy' de-selects previously selected drivers
 # "none" for disable LCD support
-  LCD_DRIVER="irtrans,imon,imonlcd,mdm166a,MtxOrb,lis,dm140,hd44780,CFontz,SureElec,vlsys_m428"
+  LCD_DRIVER="irtrans,imon,imonlcd,mdm166a,MtxOrb,lis,dm140,hd44780,CFontz,SureElec,vlsys_m428,serialVFD"
 
 # Modules to install in initramfs for early boot
-  INITRAMFS_MODULES="xhci-hcd"
+  INITRAMFS_MODULES=""
 
 # additional Firmware to use (dvb-firmware, misc-firmware, wlan-firmware)
 # Space separated list is supported,
@@ -335,9 +355,6 @@
 
 # Perf support in development builds (yes / no)
   PERF_SUPPORT="yes"
-
-# Coreboot support (yes / no)
-  COREBOOT="no"
 
 # Distribution Specific source location
   DISTRO_MIRROR="http://sources.openelec.tv/mirror"

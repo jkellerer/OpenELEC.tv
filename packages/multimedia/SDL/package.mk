@@ -60,7 +60,7 @@ PKG_CONFIGURE_OPTS_HOST="--enable-rpath \
                          --disable-diskaudio \
                          --disable-dummyaudio \
                          --disable-mintaudio \
-                         --enable-nasm \
+                         --disable-nasm \
                          --disable-altivec \
                          --disable-ipod \
                          --disable-video \
@@ -133,7 +133,7 @@ PKG_CONFIGURE_OPTS_TARGET="--disable-rpath \
                            --disable-diskaudio \
                            --disable-dummyaudio \
                            --disable-mintaudio \
-                           --enable-nasm \
+                           --disable-nasm \
                            --disable-altivec \
                            --disable-ipod \
                            --disable-video-nanox \
@@ -214,8 +214,7 @@ pre_configure_target() {
 post_makeinstall_target() {
   mkdir -p $ROOT/$TOOLCHAIN/bin
     cp $SYSROOT_PREFIX/usr/bin/sdl-config $ROOT/$TOOLCHAIN/bin
-    sed -e "s:\(['= ]\)/usr:\\1$SYSROOT_PREFIX/usr:g" \
-        -i $ROOT/$TOOLCHAIN/bin/sdl-config
+    $SED "s:\(['=\" ]\)/usr:\\1$SYSROOT_PREFIX/usr:g" $SYSROOT_PREFIX/usr/bin/sdl-config
 
   rm -rf $INSTALL/usr/bin
 }

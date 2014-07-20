@@ -17,7 +17,7 @@
 ################################################################################
 
 PKG_NAME="dbus-glib"
-PKG_VERSION="0.100.2"
+PKG_VERSION="0.102"
 PKG_REV="1"
 PKG_ARCH="any"
 PKG_LICENSE="GPL"
@@ -47,6 +47,10 @@ PKG_CONFIGURE_OPTS_TARGET="ac_cv_have_abstract_sockets=yes \
 PKG_CONFIGURE_OPTS_HOST="--disable-tests \
                          --disable-bash-completion \
                          --enable-asserts=yes"
+
+pre_configure_target() {
+  CFLAGS="$CFLAGS -fPIC -DPIC"
+}
 
 post_makeinstall_target() {
   rm -rf $INSTALL/usr/bin/dbus-binding-tool

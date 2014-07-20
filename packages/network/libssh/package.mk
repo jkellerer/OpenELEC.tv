@@ -16,6 +16,11 @@
 #  along with OpenELEC.  If not, see <http://www.gnu.org/licenses/>.
 ################################################################################
 
+
+# TODO: update to libssh-0.6.3 fails in xbmc with
+#   ld.gold: error: libsmbclient.a: multiple definition of 'string_free'
+#   ld.gold: libssh.a: previous definition here
+
 PKG_NAME="libssh"
 PKG_VERSION="0.5.5"
 PKG_REV="1"
@@ -25,7 +30,7 @@ PKG_SITE="http://www.libssh.org/"
 # PKG_URL="http://www.libssh.org/files/0.5/$PKG_NAME-$PKG_VERSION.tar.gz"
 # PKG_URL="https://red.libssh.org/attachments/download/51/$PKG_NAME-$PKG_VERSION.tar.gz" # actually down
 PKG_URL="http://pkgs.fedoraproject.org/repo/pkgs/libssh/$PKG_NAME-$PKG_VERSION.tar.gz/bb308196756c7255c0969583d917136b/$PKG_NAME-$PKG_VERSION.tar.gz"
-PKG_DEPENDS_TARGET="toolchain zlib libgcrypt"
+PKG_DEPENDS_TARGET="toolchain zlib libressl"
 PKG_PRIORITY="optional"
 PKG_SECTION="network"
 PKG_SHORTDESC="libssh: A working SSH implementation by means of a library"
@@ -37,7 +42,9 @@ PKG_AUTORECONF="no"
 configure_target() {
   cmake -DCMAKE_TOOLCHAIN_FILE=$CMAKE_CONF \
         -DCMAKE_INSTALL_PREFIX=/usr \
-        -DWITH_STATIC_LIB=1 -DWITH_GCRYPT="ON" \
+        -DWITH_STATIC_LIB=1 \
+        -DWITH_SERVER="OFF" \
+        -DWITH_GCRYPT="OFF" \
         ..
 }
 

@@ -19,11 +19,11 @@
 PKG_NAME="linux"
 case "$LINUX" in
   imx6)
-    PKG_VERSION="imx_3.0.35_4.1.0-5c73417"
+    PKG_VERSION="cuboxi-27bb585"
     PKG_URL="$DISTRO_SRC/$PKG_NAME-$PKG_VERSION.tar.xz"
     ;;
   *)
-    PKG_VERSION="3.13.6"
+    PKG_VERSION="3.15.6"
     PKG_URL="http://www.kernel.org/pub/linux/kernel/v3.x/$PKG_NAME-$PKG_VERSION.tar.xz"
     ;;
 esac
@@ -171,9 +171,9 @@ make_target() {
 
 makeinstall_target() {
   if [ "$BOOTLOADER" = "u-boot" ]; then
-    mkdir -p $INSTALL/usr/share/u-boot
+    mkdir -p $INSTALL/usr/share/bootloader
     for dtb in arch/arm/boot/dts/*.dtb; do
-      cp $dtb $INSTALL/usr/share/u-boot
+      cp $dtb $INSTALL/usr/share/bootloader
     done
   fi
 

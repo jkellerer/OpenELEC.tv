@@ -1,5 +1,8 @@
-# Name of the Distro to build (full name, without special charcters)
+# Name of the Distro to build (full name, without special characters)
   DISTRONAME="OpenELEC"
+  if [ "$XBMC" = master ]; then
+    DISTRONAME="OpenELEC_Helix"
+  fi
 
 # short project description
   DESCRIPTION="OpenELEC is a fast and userfriendly XBMC Mediacenter distribution."
@@ -116,6 +119,9 @@
 
 # Mediacenter to use (xbmc / no)
   MEDIACENTER="xbmc"
+  if [ "$XBMC" = master ]; then
+    MEDIACENTER="xbmc-master"
+  fi
 
 # Skins to install (Confluence)
 # Space separated list is supported,
@@ -148,10 +154,13 @@
   XBMC_VIS_FISHBMC="no"
 
 # build and install ALSA Audio support (yes / no)
-  ALSA_SUPPORT="no"
+  ALSA_SUPPORT="yes"
 
 # build and install PulseAudio support (yes / no)
   PULSEAUDIO_SUPPORT="no"
+
+# build and install espeak support (yes / no)
+  ESPEAK_SUPPORT="yes"
 
 # build and install with non-free support
 # (RAR compression support in XBMC) (yes / no)
@@ -161,7 +170,7 @@
 # (DVD decryption support in XBMC) (yes / no)
   DVDCSS_SUPPORT="yes"
 
-# build and install with LAME cdrip encoder support
+# build and install with LAME cdrip encoder support # deprecated with xbmc-master
   ENCODER_LAME="yes"
 
 # build and install with BluRay support (yes / no)
@@ -171,7 +180,7 @@
 # for a list of additinoal drivers see packages/linux-drivers
 # Space separated list is supported,
 # e.g. ADDITIONAL_DRIVERS="DRIVER1 DRIVER2"
-  ADDITIONAL_DRIVERS="RTL8192CU RTL8188EU dvbhdhomerun"
+  ADDITIONAL_DRIVERS="RTL8192CU RTL8192DU RTL8188EU RTL8812AU dvbhdhomerun"
 
 # build and install bluetooth support (yes / no)
   BLUETOOTH_SUPPORT="yes"
@@ -193,6 +202,11 @@
 
 # build xbmc with optical drive support (yes / no)
   OPTICAL_DRIVE_SUPPORT="yes"
+
+# XBMC Audio encoders for usage with optical drive support
+# Space separated list is supported,
+# e.g. XBMC_AUDIOENCODER_ADDONS="ENCODER1 ENCODER2"
+  XBMC_AUDIOENCODER_ADDONS="flac lame vorbis wav"
 
 # build with AirPlay support (stream videos from iDevices to XBMC) (yes / no)
   AIRPLAY_SUPPORT="yes"
@@ -241,7 +255,7 @@
 # OpenGL-ES implementation to use (no / bcm2835-driver)
   OPENGLES="bcm2835-driver"
 
-# Windowmanager to use (ratpoison / fluxbox / dwm / none)
+# Windowmanager to use (ratpoison / fluxbox / none)
   WINDOWMANAGER="none"
 
 # include uvesafb support (yes / no)
@@ -250,7 +264,7 @@
 # Displayserver to use (x11 / no)
   DISPLAYSERVER="no"
 
-# Xorg Graphic drivers to use (all / i915,i965,r200,r300,r600,nvidia,nouveau,vmware)
+# Xorg Graphic drivers to use (all / i915,i965,r200,r300,r600,nvidia,nouveau)
 # Space separated list is supported,
 # e.g. GRAPHIC_DRIVERS="i915 i965 r300 r600 radeonsi nvidia nouveau"
   GRAPHIC_DRIVERS=""
@@ -336,9 +350,6 @@
 
 # Perf support in development builds (yes / no)
   PERF_SUPPORT="yes"
-
-# Coreboot support (yes / no)
-  COREBOOT="no"
 
 # Distribution Specific source location
   DISTRO_MIRROR="http://sources.openelec.tv/mirror"
